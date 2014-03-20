@@ -27,12 +27,12 @@
 (defparameter *test-group* 'default)
 (defparameter *test-groups-table* (make-hash-table))
 
-(defmacro with-test-group ((test-suite &optional (verbosity *verbosity*)) &body body)
+(defmacro with-test-group ((test-suite &optional verbosity) &body body)
   "Specifies the test group to execute under, along with the possible
 verbosity of this lexical body. Test-suite in *test-groups-table* will
 be overwritten."
   `(let ((*test-group* ,test-suite)
-         (*verbosity* ,verbosity))
+         (*verbosity* (if ,verbosity ,verbosity *verbosity*)))
      (remhash ,test-suite *test-groups-table*)
      (progn
        ,@body
