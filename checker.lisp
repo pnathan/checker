@@ -41,7 +41,7 @@ be overwritten."
           (length results)
           (count-if #'(lambda (result) (cdr (assoc :success result))) results))))))
 
-(defmacro check (test-form &optional (name :default) identifier)
+(defmacro check (test-form &optional (name :default) identifier known-failure)
   "Verify that the expansion and evaluation of test-form results in
 something truthy. Falsity or a condition raised will result in test
 failure. Test-form will be expanded exactly once. "
@@ -58,9 +58,13 @@ failure. Test-form will be expanded exactly once. "
       (flet ((test-failure (form)
                (cond ((and (< *verbosity* 3)
                            (> *verbosity* 0))
-                      (format t "~&Test failure: ~a~%" form))
+                      (if ,known-failure
+                          (format t "~&Expected Test failure: ~a~%" form)
+                          (format t "~&Test failure: ~a~%" form)))
                      ((>= *verbosity* 3)
-                      (format t "failed~&"))
+                      (if ,known-failure
+                          (format t "failed - expected~&")
+                          (format t "failed~&")))
                      ((= *verbosity* 0)
                       t))
                (setf ,success nil))

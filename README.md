@@ -9,14 +9,14 @@ is both fragile and can be result in unacceptable behavior. For
 instance, I have experience with a particular library that does not
 allow LET forms in its test forms. This isn't reasonable.
 
-checker is a library for simple and reasonable people.
+checker is a library for simple and reasonable people. It's license is LLGPL.
 
-Its API isn't finalized, but should be roughly stable.
+checker's API is semantically versioned.
 
 API
 ===
 
-#:check
+**:check**
 
 `check` is the core operation of `checker`. Check simply verifies the
 truthiness & non-condition-throwing-ness of its `test-form`. It has
@@ -32,37 +32,48 @@ Check should not be placed in the middle of tight loops, as it
 generates a surprising amount of logic involving recording data
 against dynamic variables.
 
-#:*verbosity*
+**\*verbosity\***
 
 `*verbosity*` controls how spammy `check` is to
 `*standard-output*`. Valid values are [0-3] on the integers.
 
-#:run-checker-tests
+**run-checker-tests**
 
 `run-checker-tests` is a CLOS method whose *primary* method should be
 overridden for your package's specifier. This specifier will be used
 in the `*test-groups-table*` as the `*test-group*`.
 
-#:render-checker-results
+E.g.:
+
+```
+(defmethod checker:run-checker-tests ((specializer (eql :smoke)))
+   (checker:check (check-smoke-test)))
+
+(defun run-tests()
+   (checker:run-checker-tests :smoke))
+
+```
+
+**render-checker-results**
 
 `render-checker-results` should be overridden using a specializer
 bound to `*expected-stream*` if you need to write your own result
 renderer/analysis tool.
 
-#:*expected-stream*
+**\*expected-stream\***
 
 See above.
 
-#:with-test-group
+**with-test-group**
 
 `with-test-group` is a macro that rebinds test group name lexically
 and returns total numbers of runs and successes as values.
 
-#:*test-group*
+**\*test-group\***
 
 `*test-group*` is the current key in the test-groups-table.
 
-#:*test-groups-table*
+**\*test-groups-table\***
 
 `*test-groups-table*` is the primary entry point for all data recorded
 in the current test session.

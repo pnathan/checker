@@ -1,11 +1,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; checker.asd
 ;;;; license: llgpl
+;;;; creator: Paul Nathan
 
 (asdf:defsystem #:checker
   :components ((:file "checker"))
   :name "checker"
-  :version "0.0.1"
+  :version "1.0"
   :maintainer "Paul Nathan"
   :author "Paul Nathan"
   :licence "LLGPL"
